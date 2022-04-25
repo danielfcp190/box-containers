@@ -1,4 +1,4 @@
-import ContainerJson from "../../src/services/Models/ContainerJson";
+import ContainerJson from "../../src/services/models/ContainerJson";
 import nc from "next-connect";
 import db from "../../src/services/db";
 
