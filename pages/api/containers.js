@@ -1,13 +1,13 @@
 import nc from "next-connect";
-import ContainerJson from "../../src/services/models/ContainerJson";
+import BoxContainers from "../../src/services/models/BoxContainers";
 import db from "../../src/services/db";
 
 const handler = nc();
 
 handler.post(async (req, res) => {
   await db.connect();
-  const newContainer = new ContainerJson({
-    id: req.body.id,
+  const newContainer = new BoxContainers({
+    box: req.body.id,
     json: req.body.json,
   });
   const container = await newContainer.save();
@@ -17,7 +17,7 @@ handler.post(async (req, res) => {
 
 handler.get(async (req, res) => {
   await db.connect();
-  const containerJsons = await ContainerJson.find();
+  const containerJsons = await BoxContainers.find();
   res.status(200).json(containerJsons);
 
   await db.disconnect();

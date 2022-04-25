@@ -9,17 +9,18 @@
 
 import mongoose from "mongoose";
 
-const containerJsonSchema = new mongoose.Schema(
+const boxContainersSchema = new mongoose.Schema(
   {
-    id: { type: Number, required: true },
+    box: { type: Number, required: true },
     json: { type: String, required: true },
   },
   {
     timestamps: true,
-  }
+  },
+  { versionKey: false }
 );
 
-const ContainerJson =
-  mongoose.models.ContainerJson ||
-  mongoose.model("ContainerJson", containerJsonSchema);
-export default ContainerJson;
+const BoxContainers =
+  mongoose.models.BoxContainers ||
+  mongoose.model("BoxContainers", boxContainersSchema);
+export default BoxContainers;
