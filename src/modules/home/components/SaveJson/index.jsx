@@ -25,7 +25,7 @@ function SaveJson({ container }) {
         json,
       });
       alert(
-        `You can check the Containers on: https://powr-app.vercel.app/api/${id}`
+        `You can check the Containers on: https://box-containers.vercel.app/api/${id}`
       );
     } catch (err) {
       console.log(err);
