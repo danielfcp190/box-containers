@@ -31,3 +31,10 @@ export const addNewContainer = ({ parentId, containerId, type, items }) => ({
   type,
   items,
 });
+
+export const changeBoxColor = ({ id, color, type }) => ({
+  payload: "CHANGE_BOX_COLOR",
+  type,
+  id,
+  color,
+});

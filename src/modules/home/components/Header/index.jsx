@@ -22,13 +22,6 @@ function Header({ container }) {
           />
         )
     );
-    // return content?.map((item) =>
-    //   item.type === "box" ? (
-    //     <Box key={item.id} color={item.color} level={item.level} />
-    //   ) : (
-    //     <Container key={item.id} level={item.level} children={item.items} />
-    //   )
-    // );
   };
 
   return <>{renderContent()}</>;

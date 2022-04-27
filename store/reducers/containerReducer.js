@@ -95,6 +95,18 @@ const containerReducer = (
       mappingNewContainer(state);
       return state;
 
+    case "CHANGE_BOX_COLOR":
+      const mappingColor = (data) => {
+        for (let i in data) {
+          if (data[i].type === "container") {
+            mappingColor(data[i].items);
+          } else if (data[i].type === "box" && data[i].id === action.id) {
+            data[i].color = action.color;
+          }
+        }
+      };
+
+      mappingColor(state);
     default:
       return state;
   }

@@ -1,21 +1,41 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Circle } from "react-color";
+import { SketchPicker } from "react-color";
+import { useDispatch } from "react-redux";
+import { changeBoxColor } from "../../../../../store/actions";
 
-export default function Box({ color, id, level }) {
+export default function Box({ color, level, id }) {
+  const dispatch = useDispatch();
   const [colorPicker, setColorPicker] = useState(false);
+  const [newColor, setNewColor] = useState(color);
+
+  const handleChangeComplete = (color) => {
+    setNewColor(color.hex);
+    dispatch(
+      changeBoxColor({
+        type: "box",
+        id: id,
+        color: color.hex,
+      })
+    );
+    setColorPicker(!colorPicker);
+  };
+
   return (
     <Container>
       <BoxStyled
         level={level}
-        // key={id}
         style={{
-          backgroundColor: color,
+          backgroundColor: newColor,
         }}
         onClick={() => setColorPicker(!colorPicker)}
       />
-      {/* <div>hello</div> */}
-      {/* <ColorPicker>{colorPicker && <Circle />}</ColorPicker> */}
+
+      {colorPicker && (
+        <ColorPicker>
+          <SketchPicker color={color} onChangeComplete={handleChangeComplete} />
+        </ColorPicker>
+      )}
     </Container>
   );
 }

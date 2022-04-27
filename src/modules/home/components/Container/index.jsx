@@ -39,7 +39,12 @@ export default function Container({ children, parentId }) {
         <ContentWrapper>
           {children.map((item) =>
             item.type === "box" ? (
-              <Box key={item.id} color={item.color} parentId={item.parentId} />
+              <Box
+                id={item.id}
+                key={item.id}
+                color={item.color}
+                parentId={item.parentId}
+              />
             ) : (
               <Container
                 key={item.id}
