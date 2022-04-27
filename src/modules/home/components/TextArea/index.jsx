@@ -8,35 +8,36 @@ export default function TextArea() {
 
   const dispatch = useDispatch();
   // const json2Data = `{"type": "container", "items": [{"type": "box"}, {"type": "container", "items": [{"type": "box", "color": "green"}, {"type": "box","color": "red"}, {"type": "container", "items": [{"type": "box"}, {"type": "container", "items": [{"type": "box", "color": "green"}, {"type": "box","color": "red"}]}]}]}]}`;
-  let count = 0;
-
+  let parentId = 0;
   const build = (data) => {
+    let containerId = Math.floor(Math.random() * 10001);
     for (let i in data) {
       if (data[i] === "container") {
         dispatch(
           addContainer({
             type: "container",
             items: [],
-            level: count,
+            parentId: parentId,
+            containerId: containerId,
           })
         );
-        count++;
+        parentId = containerId;
       } else if (data[i] !== "container") {
         for (let j in data[i]) {
           if (data[i][j].type === "box") {
             data[i][j].color
               ? dispatch(
                   addBox({
+                    parentId: containerId,
                     type: "box",
                     color: `${data[i][j].color}`,
-                    level: count,
                   })
                 )
               : dispatch(
                   addBox({
+                    parentId: containerId,
                     type: "box",
                     color: "orange",
-                    level: count,
                   })
                 );
           } else {
@@ -58,7 +59,7 @@ export default function TextArea() {
       <Label htmlFor="json">Transform JSON in Boxes:</Label>
       <Text
         name="json"
-        placeholder={`{"type":"container","items":[{"type":"box","color":"green"}]}`}
+        placeholder={`"{"type":"container","items":[{"type":"box","color":"green"}]}"`}
         onChange={(e) => {
           setText(e.target.value);
         }}

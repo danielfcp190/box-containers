@@ -5,14 +5,14 @@ import Box from "../Box";
 import { addNewBox, addNewContainer } from "../../../../../store/actions";
 import { useDispatch } from "react-redux";
 
-export default function Container({ children, level, id }) {
+export default function Container({ children, parentId }) {
   const [buttonFocus, setButtonFocus] = useState(false);
   const dispatch = useDispatch();
 
   const handleBox = () => {
     dispatch(
       addNewBox({
-        level: level + 1,
+        parentId: parentId,
         type: "box",
         color: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
       })
@@ -24,7 +24,8 @@ export default function Container({ children, level, id }) {
   const handleContainer = () => {
     dispatch(
       addNewContainer({
-        level: level + 1,
+        parentId: parentId,
+        containerId: Math.floor(Math.random() * 10001),
         type: "container",
         items: [],
       })
@@ -38,11 +39,11 @@ export default function Container({ children, level, id }) {
         <ContentWrapper>
           {children.map((item) =>
             item.type === "box" ? (
-              <Box id={item.id} color={item.color} level={item.level} />
+              <Box key={item.id} color={item.color} parentId={item.parentId} />
             ) : (
               <Container
-                id={item.id}
-                level={item.level}
+                key={item.id}
+                parentId={item.parentId}
                 children={item.items}
               />
             )

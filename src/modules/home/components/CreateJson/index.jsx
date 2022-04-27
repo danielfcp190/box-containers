@@ -1,21 +1,65 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addBox, addContainer } from "../../../../../store/actions";
 
-function CreateJson({ container }) {
+export default function CreateJson() {
   const [text, setText] = useState("");
   const [content, setContent] = useState([]);
+  const state = useSelector((state) => state.containerReducer);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setContent(container);
+    setContent(state);
   });
 
   const rebuildOriginalJson = (array) => {
     for (let i in array) {
       delete array[i].id;
-      delete array[i].level;
+      delete array[i].parentId;
+      delete array[i].containerId;
       if (array[i].items) {
         rebuildOriginalJson(array[i].items);
+      }
+    }
+  };
+
+  let parentId = 0;
+  const build = (data) => {
+    let containerId = Math.floor(Math.random() * 10001);
+    for (let i in data) {
+      if (data[i] === "container") {
+        dispatch(
+          addContainer({
+            type: "container",
+            items: [],
+            parentId: parentId,
+            containerId: containerId,
+          })
+        );
+        parentId = containerId;
+      } else if (data[i] !== "container") {
+        for (let j in data[i]) {
+          if (data[i][j].type === "box") {
+            data[i][j].color
+              ? dispatch(
+                  addBox({
+                    parentId: containerId,
+                    type: "box",
+                    color: `${data[i][j].color}`,
+                  })
+                )
+              : dispatch(
+                  addBox({
+                    parentId: containerId,
+                    type: "box",
+                    color: "orange",
+                  })
+                );
+          } else {
+            build(data[i][j]);
+          }
+        }
       }
     }
   };
@@ -24,21 +68,19 @@ function CreateJson({ container }) {
     event.preventDefault();
     rebuildOriginalJson(content);
     let jsonString = JSON.stringify(content);
-    setText(jsonString);
+    setText(`"` + jsonString.slice(1, jsonString.length - 1) + `"`);
+    const jsonData = JSON.parse(jsonString.slice(1, jsonString.length - 1));
+    build(jsonData);
   };
 
   return (
     <Wrapper>
       <Label htmlFor="json">Print boxes&apos;s JSON in the textbox:</Label>
       <Button onClick={handleSubmit}>Create JSON</Button>
-      <Text name="json" value={text} />
+      <Text name="json" value={text} readOnly />
     </Wrapper>
   );
 }
-
-const mapStateToProps = (state) => ({ container: state.containerReducer });
-
-export default connect(mapStateToProps)(CreateJson);
 
 const Wrapper = styled.div`
   width: 50vw;

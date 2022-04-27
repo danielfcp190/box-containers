@@ -1,8 +1,9 @@
 const containerReducer = (
   state = [
     {
-      id: 0,
-      level: 0,
+      id: Math.floor(Math.random() * 10001),
+      parentId: 0,
+      containerId: 0,
       type: "container",
       items: [],
     },
@@ -14,10 +15,9 @@ const containerReducer = (
       const mapping = (arr) => {
         arr?.map((item) =>
           item.type === "container"
-            ? item.level === action.level - 1
+            ? item.parentId === action.parentId
               ? item.items.push({
                   id: action.id,
-                  level: action.level,
                   type: action.type,
                   color: action.color,
                 })
@@ -33,10 +33,9 @@ const containerReducer = (
       const mappingNewBox = (arr) => {
         arr?.map((item) =>
           item.type === "container"
-            ? item.level === action.level - 1
+            ? item.parentId === action.parentId
               ? item.items.push({
                   id: action.id,
-                  level: action.level,
                   type: action.type,
                   color: action.color,
                 })
@@ -52,10 +51,10 @@ const containerReducer = (
       const mappingContainer = (arr) => {
         arr?.map((item) =>
           item.type === "container"
-            ? item.level === action.level - 1
+            ? item.parentId === action.parentId
               ? item.items.push({
                   id: action.id,
-                  level: action.level,
+                  parentId: action.containerId,
                   type: action.type,
                   items: action.items,
                 })
@@ -64,11 +63,11 @@ const containerReducer = (
         );
       };
 
-      action.level === 0
+      action.parentId === 0
         ? (state = [
             {
               id: action.id,
-              level: action.level,
+              parentId: action.containerId,
               type: action.type,
               items: action.items,
             },
@@ -81,10 +80,10 @@ const containerReducer = (
       const mappingNewContainer = (arr) => {
         arr?.map((item) =>
           item.type === "container"
-            ? item.level === action.level - 1
+            ? item.parentId === action.parentId
               ? item.items.push({
                   id: action.id,
-                  level: action.level,
+                  parentId: action.containerId,
                   type: action.type,
                   items: action.items,
                 })

@@ -1,34 +1,33 @@
-let nextBoxId = 200;
-let nextContainerId = 0;
-
-export const addBox = ({ level, type, color }) => ({
+export const addBox = ({ parentId, type, color }) => ({
   payload: "ADD_BOX",
-  id: nextBoxId++,
-  level,
+  id: Math.floor(Math.random() * 10001),
+  parentId,
   type,
   color,
 });
 
-export const addContainer = ({ level, type, items }) => ({
+export const addContainer = ({ parentId, containerId, type, items }) => ({
   payload: "ADD_CONTAINER",
-  id: nextContainerId++,
-  level,
+  id: Math.floor(Math.random() * 10001),
+  parentId,
+  containerId,
   type,
   items,
 });
 
-export const addNewBox = ({ level, type, color }) => ({
+export const addNewBox = ({ parentId, type, color }) => ({
   payload: "ADD_NEW_BOX",
-  id: nextBoxId++,
-  level,
+  id: Math.floor(Math.random() * 10001),
+  parentId,
   type,
   color,
 });
 
-export const addNewContainer = ({ level, type, items }) => ({
+export const addNewContainer = ({ parentId, containerId, type, items }) => ({
   payload: "ADD_NEW_CONTAINER",
-  id: nextContainerId++,
-  level,
+  id: Math.floor(Math.random() * 10001),
+  parentId,
+  containerId,
   type,
   items,
 });

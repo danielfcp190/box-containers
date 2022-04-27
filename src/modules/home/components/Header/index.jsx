@@ -12,13 +12,23 @@ function Header({ container }) {
   });
 
   const renderContent = () => {
-    return content?.map((item) =>
-      item.type === "box" ? (
-        <Box id={item.id} color={item.color} level={item.level} />
-      ) : (
-        <Container id={item.id} level={item.level} children={item.items} />
-      )
+    return content?.map(
+      (item) =>
+        item.type === "container" && (
+          <Container
+            key={item.id}
+            parentId={item.parentId}
+            children={item.items}
+          />
+        )
     );
+    // return content?.map((item) =>
+    //   item.type === "box" ? (
+    //     <Box key={item.id} color={item.color} level={item.level} />
+    //   ) : (
+    //     <Container key={item.id} level={item.level} children={item.items} />
+    //   )
+    // );
   };
 
   return <>{renderContent()}</>;
