@@ -8,8 +8,8 @@ export default function TextArea() {
 
   const dispatch = useDispatch();
   // const json2Data = `{"type": "container", "items": [{"type": "box"}, {"type": "container", "items": [{"type": "box", "color": "green"}, {"type": "box","color": "red"}, {"type": "container", "items": [{"type": "box"}, {"type": "container", "items": [{"type": "box", "color": "green"}, {"type": "box","color": "red"}]}]}]}]}`;
-  let parentId = 0;
-  const build = (data) => {
+
+  const buildModelFromJson = (data, parentId) => {
     let containerId = Math.floor(Math.random() * 10001);
     for (let i in data) {
       if (data[i] === "container") {
@@ -41,7 +41,7 @@ export default function TextArea() {
                   })
                 );
           } else {
-            build(data[i][j]);
+            buildModelFromJson(data[i][j], parentId);
           }
         }
       }
@@ -50,7 +50,7 @@ export default function TextArea() {
 
   const handleSubmit = (event) => {
     const jsonData = JSON.parse(text.slice(1, text.length - 1));
-    build(jsonData);
+    buildModelFromJson(jsonData, 0);
     event.preventDefault();
   };
 

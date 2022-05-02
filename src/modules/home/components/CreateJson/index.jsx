@@ -24,8 +24,7 @@ export default function CreateJson() {
     }
   };
 
-  let parentId = 0;
-  const build = (data) => {
+  const buildModelFromJson = (data, parentId) => {
     let containerId = Math.floor(Math.random() * 10001);
     for (let i in data) {
       if (data[i] === "container") {
@@ -57,7 +56,7 @@ export default function CreateJson() {
                   })
                 );
           } else {
-            build(data[i][j]);
+            buildModelFromJson(data[i][j], parentId);
           }
         }
       }
@@ -68,14 +67,14 @@ export default function CreateJson() {
     event.preventDefault();
     rebuildOriginalJson(content);
     let jsonString = JSON.stringify(content);
-    setText(`"` + jsonString.slice(1, jsonString.length - 1) + `"`);
+    setText("`" + jsonString.slice(1, jsonString.length - 1) + "`");
     const jsonData = JSON.parse(jsonString.slice(1, jsonString.length - 1));
-    build(jsonData);
+    buildModelFromJson(jsonData, 0);
   };
 
   return (
     <Wrapper>
-      <Label htmlFor="json">Print boxes&apos;s JSON in the textbox:</Label>
+      <Label htmlFor="json">Transform Boxes in JSON:</Label>
       <Button onClick={handleSubmit}>Create JSON</Button>
       <Text name="json" value={text} readOnly />
     </Wrapper>
