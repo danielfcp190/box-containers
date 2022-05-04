@@ -2,8 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { connect } from "react-redux";
+import { useRouter } from "next/router";
 
 function SaveJson({ container }) {
+  const router = useRouter();
   let id;
 
   const getId = () => {
@@ -20,13 +22,15 @@ function SaveJson({ container }) {
     event.preventDefault();
     const json = JSON.stringify(container);
     try {
-      axios.post("/api/containers", {
-        id,
-        json,
-      });
-      alert(
-        `You can check the Containers on: https://box-containers.vercel.app/api/${id}`
-      );
+      axios
+        .post("/api/containers", {
+          id,
+          json,
+        })
+        .then(router.push(`http://localhost:3000/${id}`));
+      // alert(
+      //   `You can check the Containers on: https://box-containers.vercel.app/api/${id}`
+      // );
     } catch (err) {
       console.log(err);
     }

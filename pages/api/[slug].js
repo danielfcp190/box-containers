@@ -6,8 +6,8 @@ const handler = nc();
 
 handler.get(async (req, res) => {
   await db.connect();
-  const containerJsons = await BoxContainers.findOne({ box: req.query.id });
-  res.status(200).json(containerJsons);
+  const containerJsons = await BoxContainers.findOne({ box: req.query.slug });
+  res.status(200).json(containerJsons.json);
 
   await db.disconnect();
 });
