@@ -6,10 +6,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function BoxContainersfromId() {
+  const router = useRouter();
+  const { slug } = router.query;
   const state = useSelector((state) => state.containerReducer);
   const dispatch = useDispatch();
-  const router = useRouter();
-  const [data, setData] = useState([]);
   const [content, setContent] = useState([]);
 
   const rebuildOriginalJson = (array) => {
@@ -62,8 +62,25 @@ export default function BoxContainersfromId() {
     }
   };
 
-  const renderContent = () => {
-    return content?.map(
+  useEffect(() => {
+    setContent(state);
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios(`api/${slug}`);
+      const result = await response.data;
+      rebuildOriginalJson(result);
+      buildModelFromJson(result[0], 0);
+    };
+    if (slug) {
+      fetchData();
+    }
+  }, [slug]);
+
+  return (
+    content.length > 0 &&
+    content.map(
       (item) =>
         item.type === "container" && (
           <Container
@@ -73,23 +90,6 @@ export default function BoxContainersfromId() {
             children={item.items}
           />
         )
-    );
-  };
-
-  useEffect(() => {
-    const getData = async () => {
-      await axios(`api/${router.query.slug}`)
-        .then((response) => {
-          setData(response.data);
-        })
-        .then(() => {
-          rebuildOriginalJson(data);
-          buildModelFromJson(data[0], 0);
-          setContent(state);
-        });
-    };
-    getData();
-  });
-
-  return <>{renderContent()}</>;
+    )
+  );
 }

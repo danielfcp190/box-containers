@@ -28,6 +28,7 @@ function SaveJson({ container }) {
           json,
         })
         .then(router.push(`https://box-containers.vercel.app/${id}`));
+      // .then(router.push(`http://localhost:3000/${id}`));
       // alert(
       //   `You can check the Containers on: https://box-containers.vercel.app/api/${id}`
       // );
