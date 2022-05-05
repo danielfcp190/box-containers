@@ -1,56 +1,18 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
-import { addBox, addContainer } from "../../../../../store/actions";
+import { useBuildModelFromJson } from "../../../../utils/buildModel";
 
 export default function TextArea() {
   const [text, setText] = useState("");
+  const [data, setData] = useState();
 
-  const dispatch = useDispatch();
   // const json2Data = `{"type": "container", "items": [{"type": "box"}, {"type": "container", "items": [{"type": "box", "color": "green"}, {"type": "box","color": "red"}, {"type": "container", "items": [{"type": "box"}, {"type": "container", "items": [{"type": "box", "color": "green"}, {"type": "box","color": "red"}]}]}]}]}`;
 
-  const buildModelFromJson = (data, parentId) => {
-    let containerId = Math.floor(Math.random() * 10001);
-    for (let i in data) {
-      if (data[i] === "container") {
-        dispatch(
-          addContainer({
-            type: "container",
-            items: [],
-            parentId: parentId,
-            containerId: containerId,
-          })
-        );
-        parentId = containerId;
-      } else if (data[i] !== "container") {
-        for (let j in data[i]) {
-          if (data[i][j].type === "box") {
-            data[i][j].color
-              ? dispatch(
-                  addBox({
-                    parentId: containerId,
-                    type: "box",
-                    color: `${data[i][j].color}`,
-                  })
-                )
-              : dispatch(
-                  addBox({
-                    parentId: containerId,
-                    type: "box",
-                    color: "orange",
-                  })
-                );
-          } else {
-            buildModelFromJson(data[i][j], parentId);
-          }
-        }
-      }
-    }
-  };
+  useBuildModelFromJson(data, 0);
 
   const handleSubmit = (event) => {
     const jsonData = JSON.parse(text.slice(1, text.length - 1));
-    buildModelFromJson(jsonData, 0);
+    setData(jsonData);
     event.preventDefault();
   };
 
