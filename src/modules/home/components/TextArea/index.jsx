@@ -8,6 +8,7 @@ export default function TextArea() {
 
   const dispatch = useDispatch();
   // const json2Data = `{"type": "container", "items": [{"type": "box"}, {"type": "container", "items": [{"type": "box", "color": "green"}, {"type": "box","color": "red"}, {"type": "container", "items": [{"type": "box"}, {"type": "container", "items": [{"type": "box", "color": "green"}, {"type": "box","color": "red"}]}]}]}]}`;
+
   const buildModelFromJson = (data, parentId) => {
     let containerId = Math.floor(Math.random() * 10001);
     for (let i in data) {
