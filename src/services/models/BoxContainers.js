@@ -1,12 +1,3 @@
-// const mongoose = require("mongoose");
-
-// const ContainerJson = mongoose.model("ContainerJson", {
-//   json: String,
-//   id: Number,
-// });
-
-// module.exports = ContainerJson;
-
 import mongoose from "mongoose";
 
 const boxContainersSchema = new mongoose.Schema(

@@ -12,4 +12,20 @@ handler.get(async (req, res) => {
   await db.disconnect();
 });
 
+handler.put(async (req, res) => {
+  await db.connect();
+  await BoxContainers.findOneAndUpdate(
+    {
+      box: req.query.slug,
+    },
+    {
+      box: req.body.slug,
+      json: req.body.json,
+    }
+  );
+
+  res.send(200).json(BoxContainers);
+  await db.disconnect();
+});
+
 export default handler;
