@@ -95,7 +95,6 @@ export default function BoxContainersfromId() {
       console.error(err);
     }
   };
-  console.log(content);
 
   return (
     <>
@@ -119,7 +118,7 @@ export default function BoxContainersfromId() {
 }
 
 const Loading = styled.p`
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin: 3rem 3rem;
 `;
 
