@@ -71,11 +71,15 @@ export default function BoxContainersfromId() {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const response = await axios.get(`api/${slug}`);
-      const result = await response.data;
-      rebuildOriginalJson(result);
-      buildModelFromJson(result[0], 0);
-      setIsLoading(false);
+      try {
+        const response = await axios.get(`api/${slug}`);
+        const result = await response.data;
+        rebuildOriginalJson(result);
+        buildModelFromJson(result[0], 0);
+        setIsLoading(false);
+      } catch (err) {
+        console.error(err);
+      }
     };
     if (slug) {
       fetchData();
@@ -85,7 +89,11 @@ export default function BoxContainersfromId() {
   const handleUpdate = async (event) => {
     event.preventDefault();
     const json = JSON.stringify(content);
-    await axios.put(`api/${slug}`, { slug, json });
+    try {
+      await axios.put(`api/${slug}`, { slug, json });
+    } catch (err) {
+      console.error(err);
+    }
   };
   console.log(content);
 
