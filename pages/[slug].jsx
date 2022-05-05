@@ -12,6 +12,7 @@ export default function BoxContainersfromId() {
   const state = useSelector((state) => state.containerReducer);
   const dispatch = useDispatch();
   const [content, setContent] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const rebuildOriginalJson = (array) => {
     for (let i in array) {
@@ -69,10 +70,12 @@ export default function BoxContainersfromId() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       const response = await axios.get(`api/${slug}`);
       const result = await response.data;
       rebuildOriginalJson(result);
       buildModelFromJson(result[0], 0);
+      setIsLoading(false);
     };
     if (slug) {
       fetchData();
@@ -84,10 +87,13 @@ export default function BoxContainersfromId() {
     const json = JSON.stringify(content);
     await axios.put(`api/${slug}`, { slug, json });
   };
+  console.log(content);
 
   return (
     <>
+      {isLoading && <Loading>Loading...</Loading>}
       {content.length > 0 &&
+        content[0].parentId !== 0 &&
         content.map(
           (item) =>
             item.type === "container" && (
@@ -103,6 +109,11 @@ export default function BoxContainersfromId() {
     </>
   );
 }
+
+const Loading = styled.p`
+  font-size: 2rem;
+  margin: 3rem 3rem;
+`;
 
 const Button = styled.button`
   width: 30vw;
